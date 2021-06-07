@@ -78,6 +78,24 @@ Resources:
             - CrossAccount-UpdatePipeline # If we are in the build account we'll need this to allow updates of a pipeline
             - !Ref AWS::NoValue
 
+  # This role can be used by Cloudformation to create resources.
+  # Perhaps ideally, the CrossAccountCloudFormationPolicyBuilderRole should be used instead
+  # by each project's pipeline to create CloudFormation service roles that are limited to only what the project needs.. but this is easier.
+  CrossAccountCloudFormationRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Statement:
+          - Action: sts:AssumeRole
+            Effect: Allow
+            Principal:
+              Service: cloudformation.amazonaws.com
+      Description: Role for CloudFormation to create resources
+      ManagedPolicyArns:
+        - 'arn:aws:iam::aws:policy/AdministratorAccess'
+      Path: /cross-account-service-role/
+      RoleName: CrossAccount-CloudFormation
+
   CrossAccountCloudFormationPolicyBuilderRole:
     Type: AWS::IAM::Role
     Properties:
