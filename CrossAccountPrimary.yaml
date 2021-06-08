@@ -91,6 +91,12 @@ Resources:
               - !Sub arn:aws:s3:::${BuildBucket}
               - !Sub arn:aws:s3:::${BuildBucket}/*
             Effect: Allow
+          - Action:
+              - lambda:GetLayerVersion
+              - lambda:PublishLayerVersion
+            Resource:
+              - !Sub arn:aws:lambda:*:${AWS::AccountId}:layer:*
+            Effect: Allow
 
             # TODO: how best to handle things like this?
           - Action:
